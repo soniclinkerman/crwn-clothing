@@ -1,7 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
-  return <div></div>;
+  return (
+    <div>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/Mens">Mens</Link>
+        <Link to="/Womens">Mens</Link>
+        <Link to="/Mens">Mens</Link>
+        <Link to="/Mens">Mens</Link>
+      </nav>
+    </div>
+  );
 };
 
 export default Header;
