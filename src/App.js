@@ -3,6 +3,7 @@ import "./App.css";
 import HomePage from "./pages/homepage/hompage.component";
 import { Route, Routes, Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
+import ShopPage from "./pages/shop/shop.component";
 // const HomePage = (props) => {
 //   let navigate = useNavigate();
 //   console.log(props);
@@ -51,6 +52,7 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/shop" element={<ShopPage />} />
         {/* <Route path="/hats" element={<HatsPage />} />
         <Route path="topics/" element={<TopicsPage />} />
         <Route path="topics/:topicId" element={<TopicsDetailPage />} /> */}
