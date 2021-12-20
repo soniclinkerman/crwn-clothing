@@ -1,34 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { ReactComponent as Logo } from "../../assets/crown.svg";
 import "./header.styles.scss";
 
 const Header = () => {
   return (
-    <div className="navigation">
-      <nav className="nav">
-        <Link className="nav-link" to="/">
-          Home
+    <div className="header">
+      <Link className="nav-link" to="/">
+        <Logo className="logo-cointainer" to="/" />
+      </Link>
+
+      <div className="options">
+        <Link className="option" to="/shop">
+          SHOP
         </Link>
-        <Link className="nav-link" to="/hats">
-          Clothes
+        <Link className="option" to="/shop">
+          CONTACT
         </Link>
-        <Link className="nav-link" to="/jackets">
-          Jackets
-        </Link>
-        <Link className="nav-link" to="/sneakers">
-          Sneakers
-        </Link>
-        <Link className="nav-link" to="/women">
-          Women
-        </Link>
-        <Link className="nav-link" to="/men">
-          Men
-        </Link>
-        <Link className="nav-link" to="/login">
-          Login
-        </Link>
-      </nav>
+      </div>
     </div>
   );
 };

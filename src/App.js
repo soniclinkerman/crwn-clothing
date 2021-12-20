@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
-import HomePage from "./pages/homepage/hompage.component";
+import HomePage from "./pages/home/hompage.component";
 import { Route, Routes, Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
+import Header from "./components/header/header.component";
 // const HomePage = (props) => {
 //   let navigate = useNavigate();
 //   console.log(props);
@@ -50,6 +51,7 @@ import ShopPage from "./pages/shop/shop.component";
 function App() {
   return (
     <div>
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
