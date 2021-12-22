@@ -6,7 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument, db } from "./firebase/firebase.utils";
+import { doc, onSnapshot } from "firebase/firestore";
 // const HomePage = (props) => {
 //   let navigate = useNavigate();
 //   console.log(props);
@@ -61,9 +62,25 @@ class App extends React.Component {
   unsubScribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubScribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-      console.log(user);
+    this.unsubScribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = createUserProfileDocument(userAuth);
+        onSnapshot(doc(db, `users/${userAuth.uid}`), (snapShot) => {
+          this.setState(
+            {
+              currentUser: {
+                id: snapShot.id,
+                ...snapShot.data(),
+              },
+            },
+            () => {
+              console.log(this.state);
+            }
+          );
+        });
+      } else {
+        this.state = { currentUser: userAuth };
+      }
     });
   }
   componentWillUnmount() {

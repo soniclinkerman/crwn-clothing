@@ -1,8 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat/app";
-import firestore from "firebase/compat/firestore";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import {
   getAuth,
   signInWithPopup,
@@ -21,8 +20,34 @@ const firebaseConfig = {
   measurementId: "G-QPTB2QXP79",
 };
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  const userRef = doc(db, `users/${userAuth.uid}`);
+  const snapShot = await getDoc(userRef);
+
+  // console.log("snapshot:", snapShot);
+  // console.log("exists? :", snapShot.exists());
+
+  if (!snapShot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try {
+      await setDoc(userRef, {
+        displayName: displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.log("ERROR CREATING USER");
+    }
+  }
+  return userRef;
+};
+
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 export const auth = getAuth();
 export const db = getFirestore();
@@ -39,23 +64,5 @@ export const signOutOfGoogle = () =>
     .catch((error) => {
       console.log(error);
     });
-// .then((result) => {
-//   // This gives you a Google Access Token. You can use it to access the Google API.
-//   const credential = GoogleAuthProvider.credentialFromResult(result);
-//   const token = credential.accessToken;
-//   // The signed-in user info.
-//   const user = result.user;
-//   // ...
-// })
-// .catch((error) => {
-//   // Handle Errors here.
-//   const errorCode = error.code;
-//   const errorMessage = error.message;
-//   // The email of the user's account used.
-//   const email = error.email;
-//   // The AuthCredential type that was used.
-//   const credential = GoogleAuthProvider.credentialFromError(error);
-//   // ...
-// });
 
 export default firebase;
