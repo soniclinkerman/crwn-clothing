@@ -5,6 +5,8 @@ import { Route, Routes, Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
+import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import { auth } from "./firebase/firebase.utils";
 // const HomePage = (props) => {
 //   let navigate = useNavigate();
 //   console.log(props);
@@ -48,19 +50,41 @@ import Header from "./components/header/header.component";
 //   );
 // };
 
-function App() {
-  return (
-    <div>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/shop" element={<ShopPage />} />
-        {/* <Route path="/hats" element={<HatsPage />} />
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: null,
+    };
+  }
+
+  unsubScribeFromAuth = null;
+
+  componentDidMount() {
+    this.unsubScribeFromAuth = auth.onAuthStateChanged((user) => {
+      this.setState({ currentUser: user });
+      console.log(user);
+    });
+  }
+  componentWillUnmount() {
+    this.unsubScribeFromAuth();
+  }
+
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/signin" element={<SignInAndSignUpPage />} />
+          {/* <Route path="/hats" element={<HatsPage />} />
         <Route path="topics/" element={<TopicsPage />} />
         <Route path="topics/:topicId" element={<TopicsDetailPage />} /> */}
-      </Routes>
-    </div>
-  );
+        </Routes>
+      </div>
+    );
+  }
 }
 
 export default App;
