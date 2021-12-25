@@ -6,6 +6,7 @@ import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+import CartItem from "../cart-item/cart-item.component";
 
 const Header = ({ currentUser, hidden }) => {
   return (
@@ -33,7 +34,11 @@ const Header = ({ currentUser, hidden }) => {
 
         <CartIcon />
       </div>
-      {hidden && <CartDropdown />}
+      {hidden && (
+        <div>
+          <CartDropdown />
+        </div>
+      )}
     </div>
   );
 };
