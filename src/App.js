@@ -13,49 +13,7 @@ import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkoutpage.component";
-
-// const HomePage = (props) => {
-//   let navigate = useNavigate();
-//   console.log(props);
-//   return (
-//     <div>
-//       <button onClick={() => navigate("topics")}>Topics</button>
-//       <button onClick={() => navigate("hats")}>Hats</button>
-//       <button onClick={() => navigate("topics/:topicId")}>Topic Details</button>
-
-//       <Link to="topics/13">Link to topic 13</Link>
-//       <h1>HOME PAGE</h1>
-//     </div>
-//   );
-// };
-
-// const HatsPage = (props) => {
-//   console.log(props);
-//   return (
-//     <div>
-//       <h1>HATS PAGE</h1>
-//     </div>
-//   );
-// };
-
-// const TopicsPage = (props) => {
-//   console.log(props);
-//   return (
-//     <div>
-//       <h1>TOPICS PAGE</h1>
-//     </div>
-//   );
-// };
-
-// const TopicsDetailPage = (props) => {
-//   const params = useParams();
-//   console.log(params);
-//   return (
-//     <div>
-//       <h2>TOPICS DETAIL PAGE {params.topicId} </h2>
-//     </div>
-//   );
-// };
+import ContactPage from "./pages/contact/contactpage.component";
 
 class App extends React.Component {
   // constructor(props) {
@@ -98,10 +56,14 @@ class App extends React.Component {
     return (
       <div>
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
+        <Route exact path={"/"} component={HomePage} />
+        <Route path={"/shop"} component={ShopPage} />
+        <Route exact path={"/checkout"} component={CheckoutPage} />
+
+        {/* <Route path="/" element={<HomePage />} />
+          <Route path="shop/*" element={<ShopPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           <Route
             path="/signin"
@@ -112,13 +74,7 @@ class App extends React.Component {
                 <SignInAndSignUpPage />
               )
             }
-          />
-
-          {/* <Route path="/signin" render={() => this.props.currentUser ? Redirect= /> } element={<SignInAndSignUpPage />} /> */}
-          {/* <Route path="/hats" element={<HatsPage />} />
-        <Route path="topics/" element={<TopicsPage />} />
-        <Route path="topics/:topicId" element={<TopicsDetailPage />} /> */}
-        </Routes>
+          /> */}
       </div>
     );
   }

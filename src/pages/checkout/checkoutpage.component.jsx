@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import collectionItemComponent from "../../components/collection-item/collection-item.component";
 import CustomButton from "../../components/custom-button/custom-button.component";
+import "./checkout.styles.scss";
 import {
   selectCartItems,
   selectCartTotal,
