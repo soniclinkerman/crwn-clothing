@@ -6,7 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import { auth, createUserProfileDocument, db } from "./firebase/firebase.utils";
+import {
+  addCollectionAndDocuments,
+  auth,
+  createUserProfileDocument,
+  db,
+} from "./firebase/firebase.utils";
 import { doc, onSnapshot } from "firebase/firestore";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
@@ -14,6 +19,7 @@ import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkoutpage.component";
 import ContactPage from "./pages/contact/contactpage.component";
+import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
 
 class App extends React.Component {
   // constructor(props) {
@@ -26,7 +32,7 @@ class App extends React.Component {
   unsubScribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, collectionsArray } = this.props;
     this.unsubScribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = createUserProfileDocument(userAuth);
@@ -45,6 +51,11 @@ class App extends React.Component {
         });
       } else {
         setCurrentUser(userAuth);
+
+        // addCollectionAndDocuments(
+        //   "collections",
+        //   collectionsArray.map(({ title, items }) => ({ title, items }))
+        // );
       }
     });
   }
@@ -53,7 +64,7 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.props.currentUser);
+    // console.log(this.props.currentUser);
     return (
       <div>
         <Header />
@@ -80,6 +91,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  // collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = (dispatch) => ({

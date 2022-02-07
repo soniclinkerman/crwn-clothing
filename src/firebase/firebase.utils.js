@@ -1,13 +1,23 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat/app";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import admin from "firebase-admin";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
 import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
 } from "firebase/auth";
+import { firestore } from "firebase-admin";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,6 +35,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   const userRef = doc(db, `users/${userAuth.uid}`);
   const snapShot = await getDoc(userRef);
+
+  // const querySnapshot = await getDocs(collection(db, "users"));
+  // querySnapshot.forEach((doc) => {
+  //   // doc.data() is never undefined for query doc snapshots
+  //   console.log(doc.id, " => ", doc.data());
+  // });
 
   // console.log("snapshot:", snapShot);
   // console.log("exists? :", snapShot.exists());
@@ -44,6 +60,38 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
   }
   return userRef;
+};
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    var x = {
+      route: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+
+    return x;
+  });
+  return transformedCollection.reduce((accumlator, collection) => {
+    accumlator[collection.title.toLowerCase()] = collection;
+    return accumlator;
+  }, {});
+};
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const batch = writeBatch(db);
+  objectsToAdd.forEach((object) => {
+    const newDocRef = doc(collection(db, collectionKey));
+    batch.set(newDocRef, object);
+    // console.log(newDocRef);
+  });
+  return await batch.commit();
 };
 
 // Initialize Firebase
